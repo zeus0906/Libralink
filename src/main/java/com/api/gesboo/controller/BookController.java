@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class BookController {
 
     @Autowired
-    GoogleBookService googleBookService;
+    private GoogleBookService googleBookService;
 
     @GetMapping("/books/{isbn}")
     public VolumeInfo getBookByISBN(@PathVariable String isbn) {
