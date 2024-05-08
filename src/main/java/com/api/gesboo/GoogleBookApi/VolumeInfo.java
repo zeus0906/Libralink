@@ -30,6 +30,7 @@ public class VolumeInfo {
     private double averageRating;
     private int ratingsCount;
     private String contentVersion;
-    private List<AccessInfo> accessInfo;
+    private Dimensions dimensions;
+    private String mainCategory;
 
 }
