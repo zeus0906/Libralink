@@ -1,5 +1,6 @@
 package com.api.gesboo.GoogleBookApi;
 
+import com.api.gesboo.entite.Book;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,5 +13,5 @@ import lombok.Setter;
 public class Item {
 
     private String id;
-    private VolumeInfo volumeInfo;
+    private Book book;
 }

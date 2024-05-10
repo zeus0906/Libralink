@@ -1,5 +1,6 @@
 package com.api.gesboo.GoogleBookApi;
 
+import com.api.gesboo.entite.Book;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,5 +14,5 @@ import lombok.Setter;
 @Setter
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class GoogleBooksItem {
-    private VolumeInfo volumeInfo;
+    private Book book;
 }

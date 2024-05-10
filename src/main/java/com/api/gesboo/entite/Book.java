@@ -2,25 +2,26 @@ package com.api.gesboo.entite;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Entity
+
+import java.util.List;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @JsonIgnoreProperties(ignoreUnknown = true)
+@Table(name = "Book")
+@Entity
 public class Book {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long isbn;
-    private String title;
-    private String author;
-    private String publisher;
-    private String sommaire;
-    private String genre;
-    private String langue;
-    private int pages;
+    private long IdBook;
 
+    private String title;
 }
