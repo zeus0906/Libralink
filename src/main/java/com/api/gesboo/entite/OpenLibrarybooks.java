@@ -1,4 +1,4 @@
-package com.api.gesboo.GoogleBookApi;
+package com.api.gesboo.entite;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
@@ -6,17 +6,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
-
-
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class GoogleBooksResponse {
-
-    private int totalItems;
-    private List<Item> items;
-
+public class OpenLibrarybooks {
+    private String title;
+    private String publishedDate;
 }

@@ -24,4 +24,12 @@ public class Book {
     private long IdBook;
 
     private String title;
+
+//    @OneToMany(cascade = CascadeType.ALL)
+//    private List<Authors> authors;
+
+
+    private String publishedDate;
+
+
 }

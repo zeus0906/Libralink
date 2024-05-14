@@ -21,10 +21,9 @@ public class Authors {
     @GeneratedValue
     private Long id;
 
+    @JsonProperty("url")
+    private String url;
+
     @JsonProperty("name")
     private String name;
-
-    public Authors(String name) {
-        this.name = name;
-    }
 }
