@@ -21,15 +21,16 @@ public class Book {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long IdBook;
+    private Long id;
 
+    private String isbn;
     private String title;
+    private String subtitle;
+    private String byStatement;
+    private String publishDate;
+    private String publishers;
+    private int numberOfPages;
 
-//    @OneToMany(cascade = CascadeType.ALL)
-//    private List<Authors> authors;
-
-
-    private String publishedDate;
-
-
+    @ElementCollection
+    private List<String> authors;
 }

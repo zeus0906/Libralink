@@ -13,8 +13,8 @@ public class BookController {
     private OpenBookService openBookService;
 
     @GetMapping("/books/{isbn}")
-    public JsonObject getBookByISBN(@PathVariable String isbn) {
-        return openBookService.getBookByISBN(isbn);
+    public Book getBookByISBN(@PathVariable String isbn) {
+        return openBookService.saveBookDetails(isbn);
     }
 
 
