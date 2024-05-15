@@ -27,6 +27,7 @@ public class OpenBookService {
     @Autowired
     private BookRepository bookRepository;
 
+    // Permet de récuperer les données sur l'API Open Library et de l'afficher sur format JSON
     public JsonObject getBookByISBN(String isbn) {
         String url = OPEN_LIBRARY_API_URL + "?bibkeys=ISBN:" + isbn + "&jscmd=details&format=json";
         String response = restTemplate.getForObject(url, String.class);
@@ -36,11 +37,25 @@ public class OpenBookService {
         return jsonResponse.getAsJsonObject("ISBN:" + isbn);
     }
 
+    // Permet de faire la sauvegarde des données récuperer dans ma BD
     public Book saveBookDetails(String isbn) {
         JsonObject bookJson = getBookByISBN(isbn);
 
         Book book = new Book();
         book.setIsbn(isbn);
+
+        Book existingBook = bookRepository.findByIsbn(isbn);
+        if (existingBook != null) {
+            // Si le livre existe déjà, retourner sans sauvegarder
+            return existingBook;
+        }
+
+        JsonObject bookJson2 = getBookByISBN(isbn);
+
+        if (bookJson2 == null || bookJson2.isJsonNull()) {
+            // Gérer le cas où aucune donnée n'est renvoyée pour cet ISBN
+            return null;
+        }
 
         if (bookJson != null) {
             JsonObject details = bookJson.getAsJsonObject("details");
@@ -78,6 +93,12 @@ public class OpenBookService {
         JsonElement element = jsonObject.get(key);
         return element != null ? element.getAsString() : null;
     }
+
+    // Permet d'afficher la liste des livres qui se trouve dans la BD
+//    public List<Book> listeBook(){
+//        List<Book> books = new ArrayList<>();
+//        return bookRepository.findAll(books);
+//    }
 }
 
 
