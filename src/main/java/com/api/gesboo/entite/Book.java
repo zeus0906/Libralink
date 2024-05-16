@@ -9,6 +9,7 @@ import lombok.Setter;
 
 
 import java.util.List;
+import java.util.Map;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -30,7 +31,21 @@ public class Book {
     private String publishDate;
     private String publishers;
     private int numberOfPages;
+    private String weight;
+    private String url;
+    private String coverSmall;
+    private String coverMedium;
+    private String coverLarge;
 
     @ElementCollection
     private List<String> authors;
+
+    @ElementCollection
+    private List<String> subjects;
+
+    @ElementCollection
+    private Map<String, String> identifiers;
+
+    @ElementCollection
+    private List<String> links;
 }

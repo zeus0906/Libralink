@@ -24,8 +24,8 @@ public class BookController {
         return openBookService.saveBookDetails(isbn);
     }
 
-//    @GetMapping("/listBooks")
-//    public List<Book> listBooks() {
-//        return openBookService.listeBook();
-//    }
+    @GetMapping("/listBooks")
+    public List<Book> getAllBooks() {
+        return openBookService.getAllBooks();
+    }
 }
