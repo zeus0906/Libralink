@@ -34,7 +34,7 @@ public class OpenBookService {
         String url = OPEN_LIBRARY_API_URL + "?bibkeys=ISBN:" + isbn + "&jscmd=data&format=json";
         String response = restTemplate.getForObject(url, String.class);
 
-        // Convert response to JsonObject
+        // Converti response en JsonObject
         JsonObject jsonResponse = gson.fromJson(response, JsonObject.class);
         return jsonResponse.getAsJsonObject("ISBN:" + isbn);
     }
@@ -63,6 +63,7 @@ public class OpenBookService {
         book.setSubtitle(getJsonElementAsString(bookJson, "subtitle"));
         book.setByStatement(getJsonElementAsString(bookJson, "by_statement"));
         book.setPublishDate(getJsonElementAsString(bookJson, "publish_date"));
+        book.setPublishDate(getJsonElementAsString(bookJson, "language"));
         book.setWeight(getJsonElementAsString(bookJson, "weight"));
         book.setUrl(getJsonElementAsString(bookJson, "url"));
 
@@ -146,9 +147,58 @@ public class OpenBookService {
     }
 
     // Permet d'afficher la liste des livres qui se trouve dans la BD
-    public List<Book> getAllBooks() {
-        return bookRepository.findAll();
+    public List<Book> getAllBooks(){
+        List<Book> books = new ArrayList<>();
+        bookRepository.findAll().forEach(books :: add);
+        return books;
+    }
+
+    // Permet de faire la recherche en fonction de l'ISBN dans la BD
+    public Book findBookByISBN(String isbn) {
+        return bookRepository.findByIsbn(isbn);
+    }
+
+    // Permet de faire une recherche en fonction du titre d'un livre dans la BD
+    public List<Book> findBookByTitle(String title) {
+        return bookRepository.findByTitleContainingIgnoreCase(title);
+    }
+
+    // Permet de faire une recherche en fonction du nom de l'auteur dans la BD
+    public List<Book> findBookByAuthor(String author) {
+        return bookRepository.findByAuthorsContainingIgnoreCase(author);
+    }
+
+    // Permet de faire une recherche sur un livre en fonction de l'ISBN, Titre et Auteur dans la BD
+    // Si le livre n'est pas trouvé dans la BD, nous faisons la recheche dans OpenLibrary et on sauvegarde
+    public Book searchBook(String isbn, String title, String author) {
+        // Recherche dans la base de données
+        if (isbn != null && !isbn.isEmpty()) {
+            Book book = bookRepository.findByIsbn(isbn);
+            if (book != null) {
+                return book;
+            }
+        }
+
+        if (title != null && !title.isEmpty()) {
+            List<Book> books = bookRepository.findByTitleContainingIgnoreCase(title);
+            if (!books.isEmpty()) {
+                return books.get(0); // Retourner le premier livre trouvé
+            }
+        }
+
+        if (author != null && !author.isEmpty()) {
+            List<Book> books = bookRepository.findByAuthorsContainingIgnoreCase(author);
+            if (!books.isEmpty()) {
+                return books.get(0); // Retourner le premier livre trouvé
+            }
+        }
+
+        // Si le livre n'est pas trouvé, le rechercher dans OpenLibrary
+        if (isbn != null && !isbn.isEmpty()) {
+            return saveBookDetails(isbn);
+        }
+
+        // Retourner null si aucun livre n'est trouvé
+        return null;
     }
 }
-
-
