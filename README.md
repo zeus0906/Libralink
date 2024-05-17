@@ -36,7 +36,10 @@ http://localhost:8080/api/books/search/author?author=
 
 #### Nouveau endpoint pour rechercher des livres par différents critères :  
 http://localhost:8080/api/books/search?isbn=9780980200447 
+
 http://localhost:8080/api/books/search?title=Slow
+
 http://localhost:8080/api/books/search?author=John
+
 http://localhost:8080/api/books/search?title=Slow&author=John
 
