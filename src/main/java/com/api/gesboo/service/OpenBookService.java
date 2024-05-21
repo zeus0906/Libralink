@@ -1,7 +1,10 @@
 package com.api.gesboo.service;
 
 import com.api.gesboo.entite.Book;
+import com.api.gesboo.entite.BookCollection;
+import com.api.gesboo.entite.CollectionType;
 import com.api.gesboo.repository.BookRepository;
+import com.api.gesboo.repository.CollectionRepository;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -11,10 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @AllArgsConstructor
@@ -28,6 +28,9 @@ public class OpenBookService {
 
     @Autowired
     private BookRepository bookRepository;
+
+    @Autowired
+    private CollectionRepository collectionRepository;
 
     // Permet de récuperer les données sur l'API Open Library et de l'afficher sur format JSON
     public JsonObject getBookByISBN(String isbn) {
@@ -200,5 +203,42 @@ public class OpenBookService {
 
         // Retourner null si aucun livre n'est trouvé
         return null;
+    }
+
+    // Afficher un article à partir de son ID
+    public Optional<Book> afficherBookByIsbn(Long isbn){
+        Optional<Book> book = bookRepository.findById(isbn);
+        return book;
+    }
+
+    // Ajoute un livre dans une collection de livres
+    public Book addBookToCollection(String isbn, CollectionType collectionType) {
+        Book book = bookRepository.findByIsbn(isbn);
+        if (book == null) {
+            // Si le livre n'existe pas dans la base de données, on retourne null
+            return null;
+        }
+
+        BookCollection collection = collectionRepository.findByType(collectionType)
+                .orElseGet(() -> {
+                    BookCollection newCollection = new BookCollection();
+                    newCollection.setType(collectionType);
+                    return collectionRepository.save(newCollection);
+                });
+
+        collection.getBooks().add(book);
+        book.getCollections().add(collection);
+
+        collectionRepository.save(collection);
+
+        return book;
+    }
+
+    // Affiche la liste des collections
+    public List<Book> getBooksByCollection(CollectionType collectionType) {
+        return collectionRepository.findByType(collectionType)
+                .map(BookCollection::getBooks)
+                .map(ArrayList::new)
+                .orElse(new ArrayList<>());
     }
 }

@@ -1,15 +1,15 @@
 package com.api.gesboo.entite;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -74,4 +74,9 @@ public class Book {
 
     @ElementCollection
     private List<String> links;
+
+    @ManyToMany(mappedBy = "books")
+    @JsonBackReference
+    @ToString.Exclude
+    private Set<BookCollection> collections = new HashSet<>();
 }

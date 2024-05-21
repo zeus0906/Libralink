@@ -1,12 +1,14 @@
 package com.api.gesboo.controller;
 
 import com.api.gesboo.entite.Book;
+import com.api.gesboo.entite.CollectionType;
 import com.api.gesboo.service.OpenBookService;
 import com.google.gson.JsonObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class BookController {
@@ -57,5 +59,21 @@ public class BookController {
             @RequestParam(required = false) String title,
             @RequestParam(required = false) String author) {
         return openBookService.searchBook(isbn, title, author);
+    }
+
+    // Afficher un livre grace a son ISBN
+    @GetMapping(value = "Afichage/{Isbn}")
+    public Optional<Book> afficherBookByIsbn(@PathVariable(value = "Isbn") Long isbn){
+        return openBookService.afficherBookByIsbn(isbn);
+    }
+
+    @PostMapping("/{isbn}/collections/{collectionType}")
+    public Book addBookToCollection(@PathVariable String isbn, @PathVariable CollectionType collectionType) {
+        return openBookService.addBookToCollection(isbn, collectionType);
+    }
+
+    @GetMapping("/collections/{collectionType}")
+    public List<Book> getBooksByCollection(@PathVariable CollectionType collectionType) {
+        return openBookService.getBooksByCollection(collectionType);
     }
 }
