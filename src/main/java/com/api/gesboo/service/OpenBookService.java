@@ -150,10 +150,8 @@ public class OpenBookService {
     }
 
     // Permet d'afficher la liste des livres qui se trouve dans la BD
-    public List<Book> getAllBooks(){
-        List<Book> books = new ArrayList<>();
-        bookRepository.findAll().forEach(books :: add);
-        return books;
+    public List<Book> getAllBooks() {
+        return bookRepository.findAll();
     }
 
     // Permet de faire la recherche en fonction de l'ISBN dans la BD
@@ -211,34 +209,26 @@ public class OpenBookService {
         return book;
     }
 
-    // Ajoute un livre dans une collection de livres
-    public Book addBookToCollection(String isbn, CollectionType collectionType) {
-        Book book = bookRepository.findByIsbn(isbn);
-        if (book == null) {
-            // Si le livre n'existe pas dans la base de données, on retourne null
-            return null;
-        }
+//    // Ajoute un livre dans une collection de livres
+//    public Book addBookToCollection(String isbn, CollectionType collectionType) {
+//        Book book = findBookByISBN(isbn);
+//        if (book == null) {
+//            book = saveBookDetails(isbn);
+//        }
+//
+//        BookCollection collection = collectionRepository.findByType(collectionType)
+//                .orElseGet(() -> {
+//                    BookCollection newCollection = new BookCollection();
+//                    newCollection.setType(collectionType);
+//                    return collectionRepository.save(newCollection);
+//                });
+//
+//        collection.getBooks().add(book);
+//        collectionRepository.save(collection);
+//
+//        return book;
+//    }
 
-        BookCollection collection = collectionRepository.findByType(collectionType)
-                .orElseGet(() -> {
-                    BookCollection newCollection = new BookCollection();
-                    newCollection.setType(collectionType);
-                    return collectionRepository.save(newCollection);
-                });
 
-        collection.getBooks().add(book);
-        book.getCollections().add(collection);
 
-        collectionRepository.save(collection);
-
-        return book;
-    }
-
-    // Affiche la liste des collections
-    public List<Book> getBooksByCollection(CollectionType collectionType) {
-        return collectionRepository.findByType(collectionType)
-                .map(BookCollection::getBooks)
-                .map(ArrayList::new)
-                .orElse(new ArrayList<>());
-    }
 }

@@ -17,6 +17,7 @@ import java.util.Set;
 @Setter
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Table(name = "Book")
+@ToString
 @Entity
 public class Book {
 
@@ -75,8 +76,12 @@ public class Book {
     @ElementCollection
     private List<String> links;
 
+    // getters et setters
+    @Setter
+    @Getter
     @ManyToMany(mappedBy = "books")
-    @JsonBackReference
-    @ToString.Exclude
+    @JsonBackReference // Indique que c'est la propriété enfant à ne pas sérialiser
     private Set<BookCollection> collections = new HashSet<>();
+
+
 }
