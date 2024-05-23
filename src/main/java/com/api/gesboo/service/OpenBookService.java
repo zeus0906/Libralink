@@ -29,9 +29,6 @@ public class OpenBookService {
     @Autowired
     private BookRepository bookRepository;
 
-    @Autowired
-    private CollectionRepository collectionRepository;
-
     // Permet de récuperer les données sur l'API Open Library et de l'afficher sur format JSON
     public JsonObject getBookByISBN(String isbn) {
         String url = OPEN_LIBRARY_API_URL + "?bibkeys=ISBN:" + isbn + "&jscmd=data&format=json";
@@ -203,32 +200,10 @@ public class OpenBookService {
         return null;
     }
 
-    // Afficher un article à partir de son ID
-    public Optional<Book> afficherBookByIsbn(Long isbn){
-        Optional<Book> book = bookRepository.findById(isbn);
-        return book;
+    // Lire un livre en fonction de son ISBN
+    public Book lireLivreByIsbn(String isbn) {
+        return bookRepository.findByIsbn(isbn);
     }
-
-//    // Ajoute un livre dans une collection de livres
-//    public Book addBookToCollection(String isbn, CollectionType collectionType) {
-//        Book book = findBookByISBN(isbn);
-//        if (book == null) {
-//            book = saveBookDetails(isbn);
-//        }
-//
-//        BookCollection collection = collectionRepository.findByType(collectionType)
-//                .orElseGet(() -> {
-//                    BookCollection newCollection = new BookCollection();
-//                    newCollection.setType(collectionType);
-//                    return collectionRepository.save(newCollection);
-//                });
-//
-//        collection.getBooks().add(book);
-//        collectionRepository.save(collection);
-//
-//        return book;
-//    }
-
 
 
 }

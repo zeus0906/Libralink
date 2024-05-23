@@ -2,6 +2,7 @@ package com.api.gesboo.entite;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -76,12 +77,8 @@ public class Book {
     @ElementCollection
     private List<String> links;
 
-    // getters et setters
-    @Setter
-    @Getter
     @ManyToMany(mappedBy = "books")
-    @JsonBackReference // Indique que c'est la propriété enfant à ne pas sérialiser
+    @JsonBackReference
     private Set<BookCollection> collections = new HashSet<>();
-
 
 }

@@ -3,6 +3,7 @@ package com.api.gesboo.controller;
 import com.api.gesboo.entite.Book;
 import com.api.gesboo.entite.BookCollection;
 import com.api.gesboo.entite.CollectionType;
+import com.api.gesboo.service.CollectionService;
 import com.api.gesboo.service.OpenBookService;
 import com.google.gson.JsonObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,9 @@ public class BookController {
 
     @Autowired
     private OpenBookService openBookService;
+
+    @Autowired
+    private CollectionService collectionService;
 
     // Endpoint pour afficher un livre de OpenLibrary en fonction de l'ISBN
     @GetMapping("/{isbn}")
@@ -62,10 +66,10 @@ public class BookController {
         return openBookService.searchBook(isbn, title, author);
     }
 
-    // Afficher un livre grace a son ISBN
-    @GetMapping(value = "Afichage/{Isbn}")
-    public ResponseEntity<JsonObject> lireBookByISBN(@PathVariable String isbn) {
-        JsonObject book = openBookService.getBookByISBN(isbn);
+    // Endpoint pour afficher un livre en récupérant le livre en fonction de son ISBN
+    @GetMapping("/livre/{isbn}")
+    public ResponseEntity<Book> lireLivreByIsbn(@PathVariable String isbn) {
+        Book book = openBookService.lireLivreByIsbn(isbn);
         if (book != null) {
             return ResponseEntity.ok(book);
         } else {
@@ -73,21 +77,25 @@ public class BookController {
         }
     }
 
-//    @PostMapping("/{isbn}/collections/{collectionType}")
-//    public ResponseEntity<?> addBookToCollection(
-//            @PathVariable String isbn,
-//            @PathVariable CollectionType collectionType) {
-//        Book book = openBookService.addBookToCollection(isbn, collectionType);
-//        if (book != null) {
-//            return ResponseEntity.ok().build();
-//        } else {
-//            return ResponseEntity.notFound().build();
-//        }
-//    }
 
-//    @GetMapping("/collections")
-//    public List<BookCollection> getAllCollections() {
-//        return openBookService.getAllCollections();
-//    }
+    // Ajouter un livre dans une collection
+    @PostMapping("/{isbn}/collection")
+    public Book addBookToCollection(@PathVariable String isbn, @RequestParam CollectionType collectionType) {
+        Book book = collectionService.addBookToCollection(isbn, collectionType);
+        return book;
+    }
 
+    // Afficher la liste de livre d'une collection
+    @GetMapping("/collection")
+    public List<Book> getBooksByCollection(@RequestParam CollectionType collectionType) {
+        List<Book> books = collectionService.getBooksByCollection(collectionType);
+        return books;
+    }
+
+    // Liste de collection avec les livres qui y sont
+    @GetMapping("listecollections")
+    public List<BookCollection> getAllCollections() {
+        List<BookCollection> collections = collectionService.getAllCollections();
+        return collections;
+    }
 }
