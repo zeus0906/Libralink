@@ -1,16 +1,13 @@
 package com.api.gesboo.service;
 
 import com.api.gesboo.entite.Book;
-import com.api.gesboo.entite.BookCollection;
-import com.api.gesboo.entite.CollectionType;
 import com.api.gesboo.repository.BookRepository;
-import com.api.gesboo.repository.CollectionRepository;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.Getter;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -22,11 +19,14 @@ public class OpenBookService {
 
     private static final String OPEN_LIBRARY_API_URL= "https://openlibrary.org/api/books";
 
-    private RestTemplate restTemplate = new RestTemplate();
 
+    private RestTemplate restTemplate;
+
+
+    @Getter
     private final Gson gson;
 
-    @Autowired
+
     private BookRepository bookRepository;
 
     // Permet de récuperer les données sur l'API Open Library et de l'afficher sur format JSON

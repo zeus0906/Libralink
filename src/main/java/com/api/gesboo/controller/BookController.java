@@ -1,16 +1,17 @@
 package com.api.gesboo.controller;
 
 import com.api.gesboo.entite.Book;
-import com.api.gesboo.entite.BookCollection;
-import com.api.gesboo.entite.CollectionType;
+import com.api.gesboo.entite.Collection;
 import com.api.gesboo.service.CollectionService;
 import com.api.gesboo.service.OpenBookService;
 import com.google.gson.JsonObject;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 public class BookController {
@@ -77,25 +78,46 @@ public class BookController {
         }
     }
 
-
-    // Ajouter un livre dans une collection
-    @PostMapping("/{isbn}/collection")
-    public Book addBookToCollection(@PathVariable String isbn, @RequestParam CollectionType collectionType) {
-        Book book = collectionService.addBookToCollection(isbn, collectionType);
-        return book;
+    @PostMapping("/books/{isbn}/addToCollection/{collectionName}")
+    public ResponseEntity<Book> addToCollection(@PathVariable String isbn, @PathVariable String collectionName) {
+        Book book = openBookService.findBookByISBN(isbn);
+        if (book != null) {
+            try {
+                collectionService.addToCollectionByName(isbn, collectionName, book);
+                return ResponseEntity.ok(book);
+            } catch (EntityNotFoundException e) {
+                return ResponseEntity.notFound().build();
+            }
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
-    // Afficher la liste de livre d'une collection
-    @GetMapping("/collection")
-    public List<Book> getBooksByCollection(@RequestParam CollectionType collectionType) {
-        List<Book> books = collectionService.getBooksByCollection(collectionType);
-        return books;
+    @DeleteMapping("/collections/{collectionId}/books/{bookId}")
+    public ResponseEntity<Collection> removeFromCollection(@PathVariable String collectionId, @PathVariable String bookId) {
+        try {
+            Collection collection = collectionService.removeBookFromCollection(collectionId, bookId);
+            return ResponseEntity.ok(collection);
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
-    // Liste de collection avec les livres qui y sont
-    @GetMapping("listecollections")
-    public List<BookCollection> getAllCollections() {
-        List<BookCollection> collections = collectionService.getAllCollections();
-        return collections;
+    @GetMapping("/collections/{collectionId}/books")
+    public ResponseEntity<Set<Book>> getBooksInCollection(@PathVariable String collectionId) {
+        try {
+            Set<Book> books = collectionService.getBooksInCollection(collectionId);
+            return ResponseEntity.ok(books);
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
+
+    @GetMapping("/collections")
+    public ResponseEntity<List<Collection>> getCollections() {
+        List<Collection> collections = collectionService.getCollections();
+        return ResponseEntity.ok(collections);
+    }
+
+
 }

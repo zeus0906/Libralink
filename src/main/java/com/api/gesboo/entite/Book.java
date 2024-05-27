@@ -78,7 +78,25 @@ public class Book {
     private List<String> links;
 
     @ManyToMany(mappedBy = "books")
-    @JsonBackReference
-    private Set<BookCollection> collections = new HashSet<>();
+    @JsonManagedReference
+    private Set<Collection> collections = new HashSet<>();
+
+    public void addCollection(Collection collection) {
+        if (!collections.contains(collection)) {
+            collections.add(collection);
+            collection.getBooks().add(this); // Établir la relation inverse
+        }
+    }
+
+    public void removeCollection(Collection collection) {
+        if (collections.contains(collection)) {
+            collections.remove(collection);
+            collection.getBooks().remove(this); // Rompre la relation inverse
+        }
+    }
+
+    public Set<Collection> getCollections() {
+        return new HashSet<>(collections); // Renvoyer une copie
+    }
 
 }
