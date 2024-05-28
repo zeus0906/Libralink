@@ -26,9 +26,6 @@ public class Collection {
     @Enumerated(EnumType.STRING)
     private CollectionType type;
 
-
-    private String description;
-
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "book_collection",
             joinColumns = @JoinColumn(name = "collection_id"),

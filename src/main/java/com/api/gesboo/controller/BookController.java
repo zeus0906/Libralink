@@ -2,6 +2,7 @@ package com.api.gesboo.controller;
 
 import com.api.gesboo.entite.Book;
 import com.api.gesboo.entite.Collection;
+import com.api.gesboo.entite.CollectionType;
 import com.api.gesboo.service.CollectionService;
 import com.api.gesboo.service.OpenBookService;
 import com.google.gson.JsonObject;
@@ -78,12 +79,12 @@ public class BookController {
         }
     }
 
-    @PostMapping("/books/{isbn}/addToCollection/{collectionName}")
-    public ResponseEntity<Book> addToCollection(@PathVariable String isbn, @PathVariable String collectionName) {
+    @PostMapping("/{isbn}/addToCollection/{collectionType}")
+    public ResponseEntity<Book> addToCollection(@PathVariable String isbn, @PathVariable CollectionType collectionType) {
         Book book = openBookService.findBookByISBN(isbn);
         if (book != null) {
             try {
-                collectionService.addToCollectionByName(isbn, collectionName, book);
+                collectionService.addBookToCollection(isbn, collectionType);
                 return ResponseEntity.ok(book);
             } catch (EntityNotFoundException e) {
                 return ResponseEntity.notFound().build();

@@ -6,12 +6,12 @@ import com.api.gesboo.entite.CollectionType;
 import com.api.gesboo.repository.BookRepository;
 import com.api.gesboo.repository.CollectionRepository;
 import jakarta.persistence.EntityNotFoundException;
-import org.apache.juli.logging.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -22,26 +22,47 @@ public class CollectionService {
     @Autowired
     private CollectionRepository collectionRepository;
 
-    public void addToCollectionByName(String bookIsbn, String collectionType, Book book) {
-        try {
-            Book bookToAdd = bookRepository.findByIsbn(bookIsbn);
-            Collection collection = (Collection) collectionRepository.findByType(CollectionType.valueOf(collectionType));
-
-            if (bookToAdd != null && collection != null) {
-                bookToAdd.addCollection(collection);
-                collection.addBook(bookToAdd);
-                bookRepository.save(bookToAdd);
-                collectionRepository.save(collection);
-            } else {
-                throw new EntityNotFoundException("Book or collection not found");
-            }
-        } catch (EntityNotFoundException e) {
-            // Gérer l'exception EntityNotFoundException
-            Log log = null;
-            log.error("Error adding book to collection: " + e.getMessage());
-            // Renvoyer des informations d'erreur plus détaillées
+    public Book addBookToCollection(String isbn, CollectionType collectionType) {
+        // Recherchez le livre dans la base de données
+        Book book = bookRepository.findByIsbn(isbn);
+        if (book == null) {
+            return null; // Retournez null si le livre n'existe pas dans la base de données
         }
+
+        // Recherchez la collection ou créez-la si elle n'existe pas
+        Optional<Collection> collectionOptional = collectionRepository.findByType(collectionType);
+        Collection collection;
+        if (collectionOptional.isPresent()) {
+            collection = collectionOptional.get();
+        } else {
+            collection = new Collection();
+            collection.setType(collectionType);
+        }
+
+        // Vérifiez si le livre est déjà dans la collection pour éviter les doublons
+        if (!collection.getBooks().contains(book)) {
+            // Ajoutez le livre à la collection
+            collection.getBooks().add(book);
+
+            // Journalisez l'ajout du livre à la collection
+            System.out.println("Ajout du livre : " + book.getTitle() + " à la collection : " + collection.getType());
+
+            // Essayez d'enregistrer la collection dans la base de données
+            try {
+                collectionRepository.save(collection);
+                System.out.println("Collection " + collection.getType() + " enregistrée avec succès");
+            } catch (Exception e) {
+                // En cas d'échec de l'enregistrement, annulez l'ajout du livre
+                collection.getBooks().remove(book);
+                System.out.println("Échec de l'enregistrement de la collection " + collection.getType() + " : " + e.getMessage());
+                throw e; // Relancez l'exception pour une gestion au niveau supérieur
+            }
+        }
+
+        return book;
     }
+
+
 
     public Collection removeBookFromCollection(String collectionId, String bookId) throws EntityNotFoundException {
         Collection collection = collectionRepository.findById(Integer.valueOf(collectionId)).orElseThrow(() -> new EntityNotFoundException("Collection not found"));
