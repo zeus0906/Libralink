@@ -1,6 +1,6 @@
 package com.api.gesboo.repository;
 
-import com.api.gesboo.entite.Book;
+import com.api.gesboo.entite.Book.Book;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

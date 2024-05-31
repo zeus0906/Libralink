@@ -1,8 +1,8 @@
 package com.api.gesboo.Test;
 
-import com.api.gesboo.entite.Book;
-import com.api.gesboo.entite.Collection;
-import com.api.gesboo.entite.CollectionType;
+import com.api.gesboo.entite.Book.Book;
+import com.api.gesboo.entite.Book.Collection;
+import com.api.gesboo.entite.Book.CollectionType;
 import com.api.gesboo.repository.BookRepository;
 import com.api.gesboo.repository.CollectionRepository;
 import com.api.gesboo.service.CollectionService;

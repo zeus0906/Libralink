@@ -1,8 +1,8 @@
 package com.api.gesboo.controller;
 
-import com.api.gesboo.entite.Book;
-import com.api.gesboo.entite.Collection;
-import com.api.gesboo.entite.CollectionType;
+import com.api.gesboo.entite.Book.Book;
+import com.api.gesboo.entite.Book.Collection;
+import com.api.gesboo.entite.Book.CollectionType;
 import com.api.gesboo.service.CollectionService;
 import com.api.gesboo.service.OpenBookService;
 import com.google.gson.JsonObject;
