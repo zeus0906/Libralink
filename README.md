@@ -29,10 +29,10 @@ http://localhost:8080/api/books/listBooks
 http://localhost:8080/api/books/search/isbn?isbn=
 
 #### Endpoint pour rechercher des livres par titre :
-http://localhost:8080/api/books/search/title?title=
+http://localhost:8080/api/books/search/title?title
 
 #### Endpoint pour rechercher des livres par auteur :
-http://localhost:8080/api/books/search/author?author=
+http://localhost:8080/api/books/search/author?author
 
 #### Nouveau endpoint pour rechercher des livres par différents critères :  
 http://localhost:8080/api/books/search?isbn=9780980200447 
