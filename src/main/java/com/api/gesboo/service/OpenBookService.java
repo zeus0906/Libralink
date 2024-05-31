@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -39,7 +40,7 @@ public class OpenBookService {
         return jsonResponse.getAsJsonObject("ISBN:" + isbn);
     }
 
-    // Permet de faire la sauvegarde des données récuperer dans ma BD
+    // Permet de faire la sauvegarde des données récupérer dans ma BD
     public Book saveBookDetails(String isbn) {
         // Vérifier si le livre existe déjà dans la base de données
         Book existingBook = bookRepository.findByIsbn(isbn);
@@ -167,7 +168,7 @@ public class OpenBookService {
     }
 
     // Permet de faire une recherche sur un livre en fonction de l'ISBN, Titre et Auteur dans la BD
-    // Si le livre n'est pas trouvé dans la BD, nous faisons la recheche dans OpenLibrary et on sauvegarde
+    // Si le livre n'est pas trouvé dans la BD, nous faisons la recherche dans OpenLibrary et on sauvegarde
     public Book searchBook(String isbn, String title, String author) {
         // Recherche dans la base de données
         if (isbn != null && !isbn.isEmpty()) {
@@ -204,6 +205,14 @@ public class OpenBookService {
     public Book lireLivreByIsbn(String isbn) {
         return bookRepository.findByIsbn(isbn);
     }
+
+    public List<Book> getBooksInCollections() {
+        List<Book> allBooks = bookRepository.findAll();
+        return allBooks.stream()
+                .filter(book -> !book.getCollections().isEmpty())
+                .collect(Collectors.toList());
+    }
+
 
 
 }

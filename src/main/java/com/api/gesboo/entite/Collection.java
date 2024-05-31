@@ -26,10 +26,12 @@ public class Collection {
     @Enumerated(EnumType.STRING)
     private CollectionType type;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "book_collection",
+    @ManyToMany
+    @JoinTable(
+            name = "collection_book",
             joinColumns = @JoinColumn(name = "collection_id"),
-            inverseJoinColumns = @JoinColumn(name = "book_id"))
+            inverseJoinColumns = @JoinColumn(name = "book_id")
+    )
     @JsonBackReference
     private Set<Book> books = new HashSet<>();
 

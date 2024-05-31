@@ -8,11 +8,9 @@ import com.api.gesboo.repository.CollectionRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class CollectionService {
@@ -22,6 +20,7 @@ public class CollectionService {
     @Autowired
     private CollectionRepository collectionRepository;
 
+    @Transactional
     public Book addBookToCollection(String isbn, CollectionType collectionType) {
         // Recherchez le livre dans la base de données
         Book book = bookRepository.findByIsbn(isbn);
@@ -37,23 +36,18 @@ public class CollectionService {
         } else {
             collection = new Collection();
             collection.setType(collectionType);
+            collectionRepository.save(collection); // Sauvegarder la nouvelle collection pour obtenir un ID
         }
 
-        // Vérifiez si le livre est déjà dans la collection pour éviter les doublons
+        // Ajoutez le livre à la collection si ce n'est pas déjà fait
         if (!collection.getBooks().contains(book)) {
-            // Ajoutez le livre à la collection
-            collection.getBooks().add(book);
-
-            // Journalisez l'ajout du livre à la collection
-            System.out.println("Ajout du livre : " + book.getTitle() + " à la collection : " + collection.getType());
+            collection.addBook(book); // Utiliser la méthode addBook pour gérer les relations bidirectionnelles
 
             // Essayez d'enregistrer la collection dans la base de données
             try {
                 collectionRepository.save(collection);
                 System.out.println("Collection " + collection.getType() + " enregistrée avec succès");
             } catch (Exception e) {
-                // En cas d'échec de l'enregistrement, annulez l'ajout du livre
-                collection.getBooks().remove(book);
                 System.out.println("Échec de l'enregistrement de la collection " + collection.getType() + " : " + e.getMessage());
                 throw e; // Relancez l'exception pour une gestion au niveau supérieur
             }
@@ -61,7 +55,6 @@ public class CollectionService {
 
         return book;
     }
-
 
 
     public Collection removeBookFromCollection(String collectionId, String bookId) throws EntityNotFoundException {

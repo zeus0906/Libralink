@@ -37,8 +37,9 @@ public class BookController {
 
     // Endpoint pour afficher la liste des livres
     @GetMapping("/listBooks")
-    public List<Book> getAllBooks() {
-        return openBookService.getAllBooks();
+    public ResponseEntity<List<Book>> getAllBooks() {
+        List<Book> books = openBookService.getAllBooks();
+        return ResponseEntity.ok(books);
     }
 
     // Endpoint pour rechercher des livres par ISBN
@@ -79,19 +80,16 @@ public class BookController {
         }
     }
 
-    @PostMapping("/{isbn}/addToCollection/{collectionType}")
-    public ResponseEntity<Book> addToCollection(@PathVariable String isbn, @PathVariable CollectionType collectionType) {
-        Book book = openBookService.findBookByISBN(isbn);
-        if (book != null) {
-            try {
-                collectionService.addBookToCollection(isbn, collectionType);
-                return ResponseEntity.ok(book);
-            } catch (EntityNotFoundException e) {
-                return ResponseEntity.notFound().build();
-            }
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    @GetMapping("/in-collections")
+    public List<Book> getBooksInCollections() {
+        return openBookService.getBooksInCollections();
+    }
+
+
+    @PostMapping("/{isbn}/collection")
+    public ResponseEntity<Book> addBookToCollection(@PathVariable String isbn, @RequestParam CollectionType collectionType) {
+        Book book = collectionService.addBookToCollection(isbn, collectionType);
+        return book != null ? ResponseEntity.ok(book) : ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/collections/{collectionId}/books/{bookId}")
