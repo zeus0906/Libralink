@@ -1,6 +1,7 @@
 package com.api.gesboo.GoogleBookApi;
 
-import com.api.gesboo.entite.Book.Book;
+
+import com.api.gesboo.entite.Book;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

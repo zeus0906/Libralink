@@ -1,6 +1,7 @@
 package com.api.gesboo.service;
 
-import com.api.gesboo.entite.Book.Book;
+
+import com.api.gesboo.entite.Book;
 import com.api.gesboo.repository.BookRepository;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -209,7 +210,7 @@ public class OpenBookService {
     public List<Book> getBooksInCollections() {
         List<Book> allBooks = bookRepository.findAll();
         return allBooks.stream()
-                .filter(book -> !book.getCollections().isEmpty())
+                .filter(book -> !book.getCategories().isEmpty())
                 .collect(Collectors.toList());
     }
 

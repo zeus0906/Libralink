@@ -1,8 +1,9 @@
 package com.api.gesboo.controller;
 
-import com.api.gesboo.entite.Book.Book;
-import com.api.gesboo.entite.Book.Collection;
-import com.api.gesboo.entite.Book.CollectionType;
+
+import com.api.gesboo.entite.Book;
+import com.api.gesboo.entite.Categorie;
+import com.api.gesboo.enums.CategorieType;
 import com.api.gesboo.service.CollectionService;
 import com.api.gesboo.service.OpenBookService;
 import com.google.gson.JsonObject;
@@ -87,16 +88,16 @@ public class BookController {
 
 
     @PostMapping("/{isbn}/collection")
-    public ResponseEntity<Book> addBookToCollection(@PathVariable String isbn, @RequestParam CollectionType collectionType) {
-        Book book = collectionService.addBookToCollection(isbn, collectionType);
+    public ResponseEntity<Book> addBookToCollection(@PathVariable String isbn, @RequestParam CategorieType categorieType) {
+        Book book = collectionService.addBookToCollection(isbn, categorieType);
         return book != null ? ResponseEntity.ok(book) : ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/collections/{collectionId}/books/{bookId}")
-    public ResponseEntity<Collection> removeFromCollection(@PathVariable String collectionId, @PathVariable String bookId) {
+    public ResponseEntity<Categorie> removeFromCollection(@PathVariable String collectionId, @PathVariable String bookId) {
         try {
-            Collection collection = collectionService.removeBookFromCollection(collectionId, bookId);
-            return ResponseEntity.ok(collection);
+            Categorie categorie = collectionService.removeBookFromCollection(collectionId, bookId);
+            return ResponseEntity.ok(categorie);
         } catch (EntityNotFoundException e) {
             return ResponseEntity.notFound().build();
         }
@@ -113,9 +114,9 @@ public class BookController {
     }
 
     @GetMapping("/collections")
-    public ResponseEntity<List<Collection>> getCollections() {
-        List<Collection> collections = collectionService.getCollections();
-        return ResponseEntity.ok(collections);
+    public ResponseEntity<List<Categorie>> getCollections() {
+        List<Categorie> categories = collectionService.getCollections();
+        return ResponseEntity.ok(categories);
     }
 
 
