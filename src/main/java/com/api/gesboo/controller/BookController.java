@@ -9,6 +9,8 @@ import com.api.gesboo.service.OpenBookService;
 import com.google.gson.JsonObject;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,9 +41,27 @@ public class BookController {
     // Endpoint pour afficher la liste des livres
     @GetMapping("/listBooks")
     public ResponseEntity<List<Book>> getAllBooks() {
-        List<Book> books = openBookService.getAllBooks();
-        return ResponseEntity.ok(books);
+        try {
+            return new ResponseEntity<>(openBookService.getAllBooksInCollections(), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
+
+    @GetMapping("/listBooksWithoutCollections")
+    public ResponseEntity<List<Book>> getAllBooksWithoutCollections() {
+        try {
+            return new ResponseEntity<>(openBookService.getAllBooksWithoutCollections(), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+//    public ResponseEntity<List<Book>> getAllBooks() {
+//        List<Book> books = openBookService.getAllBooks();
+//
+//        return ResponseEntity.ok(books);
+//    }
 
     // Endpoint pour rechercher des livres par ISBN
     @GetMapping("/search/isbn")

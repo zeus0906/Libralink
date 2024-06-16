@@ -150,8 +150,26 @@ public class OpenBookService {
 
     // Permet d'afficher la liste des livres qui se trouve dans la BD
     public List<Book> getAllBooks() {
-        return bookRepository.findAll();
+        List<Book> books = new ArrayList<>();
+        bookRepository.findAll().forEach(books::add);
+        return books;
     }
+
+    public List<Book> getAllBooksInCollections() {
+        return getAllBooks()
+                .stream()
+                .filter(book -> !book.getCategories().isEmpty())
+                .collect(Collectors.toList());
+    }
+
+    public List<Book> getAllBooksWithoutCollections() {
+        return getAllBooks()
+                .stream()
+                .filter(book -> book.getCategories().isEmpty())
+                .collect(Collectors.toList());
+    }
+
+
 
     // Permet de faire la recherche en fonction de l'ISBN dans la BD
     public Book findBookByISBN(String isbn) {

@@ -18,6 +18,13 @@ services:
     ports:
       - 8082:8080
 
+  smtp4dev:
+    image: rnwood/smtp4dev:v3
+    restart: always
+    ports:
+      - 9081:80
+      - 9025:25
+
 
 #  microcontenu:
 #    container_name: blogging
