@@ -24,10 +24,14 @@ public class Utilisateur implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
     @Column(name = "mot_de_passe")
     private String mdp;
+
     private String username;
+
     private String email;
+
     private boolean actif=false;
 
     @OneToOne(cascade = CascadeType.PERSIST)
