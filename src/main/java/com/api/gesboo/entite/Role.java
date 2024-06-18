@@ -4,17 +4,19 @@ import com.api.gesboo.enums.TypeDeRole;
 import jakarta.persistence.*;
 import lombok.*;
 
+@Builder
+@Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-@Table(name = "Role")
-@ToString
-@Entity
+@Table(name= "roles")
 public class Role {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int idRole;
+
     @Enumerated(EnumType.STRING)
     private TypeDeRole libelle;
 }
