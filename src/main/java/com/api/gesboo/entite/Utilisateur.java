@@ -23,7 +23,7 @@ public class Utilisateur implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
 
     @Column(name = "mot_de_passe")
     private String mdp;

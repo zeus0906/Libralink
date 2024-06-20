@@ -17,8 +17,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import static org.springframework.http.HttpMethod.GET;
-import static org.springframework.http.HttpMethod.POST;
+import static org.springframework.http.HttpMethod.*;
 
 @Configuration
 @EnableWebSecurity
@@ -56,6 +55,12 @@ public class ConfigurationSecurityApplication {
                                         .requestMatchers(GET,"/search/isbn").permitAll()
                                         .requestMatchers(GET,"/search/title").permitAll()
                                         .requestMatchers(GET,"/livre/{isbn}").permitAll()
+
+                                        .requestMatchers(POST,"/ajouterAvis").permitAll()
+                                        .requestMatchers(PUT,"/update/{id}").permitAll()
+                                        .requestMatchers(DELETE,"/delete/{id}").permitAll()
+                                        .requestMatchers(GET,"/book/{bookId}").permitAll()
+                                        .requestMatchers(POST,"/reply/add").permitAll()
                                         .anyRequest().authenticated()
 
                 )

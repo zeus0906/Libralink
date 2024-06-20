@@ -1,6 +1,7 @@
 package com.api.gesboo.controller;
 
 import com.api.gesboo.entite.Avis;
+import com.api.gesboo.entite.AvisDto;
 import com.api.gesboo.entite.Reply;
 import com.api.gesboo.service.AvisService;
 import lombok.AllArgsConstructor;
@@ -16,14 +17,16 @@ public class AvisController {
     private AvisService avisService;
 
     @PostMapping("/ajouterAvis")
-    public ResponseEntity<Avis> ajouterAvis(@RequestParam int utilisateurId,@RequestParam Long bookId,@RequestParam int note,@RequestParam String contenu){
-        Avis avis = avisService.addAvis(utilisateurId, bookId, note, contenu);
+    public ResponseEntity<Avis> ajouterAvis(@RequestParam long utilisateurId,
+                                            @RequestParam Long bookId,
+                                            @RequestBody AvisDto avisDto){
+        Avis avis = avisService.addAvis(utilisateurId, bookId, avisDto);
         return avis != null ? ResponseEntity.ok(avis) : ResponseEntity.badRequest().build();
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<Avis> updateAvis(@PathVariable int id, @RequestParam int note, @RequestParam String contenu) {
-        Avis avis = avisService.updateAvis(id, note, contenu);
+    public ResponseEntity<Avis> updateAvis(@PathVariable int id, @RequestBody AvisDto avisDto) {
+        Avis avis = avisService.updateAvis(id, avisDto);
         return avis != null ? ResponseEntity.ok(avis) : ResponseEntity.notFound().build();
     }
 
@@ -40,7 +43,9 @@ public class AvisController {
     }
 
     @PostMapping("/reply/add")
-    public ResponseEntity<Reply> addReply(@RequestParam int userId, @RequestParam int reviewId, @RequestParam String content) {
+    public ResponseEntity<Reply> addReply(@RequestParam int userId,
+                                          @RequestParam int reviewId,
+                                          @RequestBody String content) {
         Reply reply = avisService.ajouteReply(userId, reviewId, content);
         return reply != null ? ResponseEntity.ok(reply) : ResponseEntity.badRequest().build();
     }

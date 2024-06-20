@@ -64,7 +64,7 @@ public class UtilisateurService implements UserDetailsService {
             throw new RuntimeException("Votre code a expiré");
         }
 
-       Utilisateur utilisateurActiver =  this.utilisateurRepository.findById(Math.toIntExact(validation.getUtilisateur().getId())).orElseThrow(() -> new RuntimeException("Utilisateur inconnu"));
+       Utilisateur utilisateurActiver =  this.utilisateurRepository.findById(validation.getUtilisateur().getId()).orElseThrow(() -> new RuntimeException("Utilisateur inconnu"));
         utilisateurActiver.setActif(true);
         this.utilisateurRepository.save(utilisateurActiver);
     }

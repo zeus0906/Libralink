@@ -1,9 +1,6 @@
 package com.api.gesboo.service;
 
-import com.api.gesboo.entite.Avis;
-import com.api.gesboo.entite.Book;
-import com.api.gesboo.entite.Reply;
-import com.api.gesboo.entite.Utilisateur;
+import com.api.gesboo.entite.*;
 import com.api.gesboo.repository.AvisRepository;
 import com.api.gesboo.repository.BookRepository;
 import com.api.gesboo.repository.ReplyRepository;
@@ -27,7 +24,7 @@ public class AvisService {
     private UtilisateurRepository utilisateurRepository;
 
     // Permet de mettre un avis sur livre
-    public Avis addAvis(int utilisateurId, Long bookId, int note, String contenu) {
+    public Avis addAvis(long utilisateurId, Long bookId, AvisDto avisDto) {
         Optional<Utilisateur> utilisateurOptional = utilisateurRepository.findById(utilisateurId);
         Optional<Book> bookOptional = bookRepository.findById(bookId);
 
@@ -35,20 +32,20 @@ public class AvisService {
             Avis avis = new Avis();
             avis.setUtilisateur(utilisateurOptional.get());
             avis.setBook(bookOptional.get());
-            avis.setNote(note);
-            avis.setContenu(contenu);
+            avis.setNote(avisDto.getNote());
+            avis.setContenu(avisDto.getContenu());
             return avisRepository.save(avis);
         }
         return null;
     }
 
     // Permet de faire la mise à jour d'un Avis
-    public Avis updateAvis(int avisId, int note, String contenu) {
+    public Avis updateAvis(int avisId, AvisDto avisDto) {
         Optional<Avis> avisOptional = avisRepository.findById(avisId);
         if (avisOptional.isPresent()) {
             Avis avis = avisOptional.get();
-            avis.setNote(note);
-            avis.setContenu(contenu);
+            avis.setNote(avisDto.getNote());
+            avis.setContenu(avisDto.getContenu());
             return avisRepository.save(avis);
         }
         return null;
@@ -64,7 +61,7 @@ public class AvisService {
         return avisRepository.findByBookId(bookId);
     }
 
-    public Reply ajouteReply(int utilisateurId, int avisId, String contenu){
+    public Reply ajouteReply(long utilisateurId, int avisId, String contenu){
         Optional<Utilisateur> utilisateurOptional = utilisateurRepository.findById(utilisateurId);
         Optional<Avis> avisOptional = avisRepository.findById(avisId);
 
