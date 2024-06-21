@@ -1,7 +1,7 @@
 package com.api.gesboo.repository;
 
 
-import com.api.gesboo.entite.User.Validation;
+import com.api.gesboo.entite.Validation;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

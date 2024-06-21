@@ -1,10 +1,10 @@
 package com.api.gesboo.service;
 
 
-import com.api.gesboo.entite.User.Role;
-import com.api.gesboo.entite.User.TypeRoles;
-import com.api.gesboo.entite.User.Utilisateur;
-import com.api.gesboo.entite.User.Validation;
+import com.api.gesboo.entite.Role;
+import com.api.gesboo.entite.Utilisateur;
+import com.api.gesboo.entite.Validation;
+import com.api.gesboo.enums.TypeDeRole;
 import com.api.gesboo.repository.UtilisateurRepository;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -47,10 +47,10 @@ public class UtilisateurService implements UserDetailsService {
         }
 
         String passwordCrypte = this.passwordEncoder.encode(utilisateur.getPassword());
-        utilisateur.setPassword(passwordCrypte);
+        utilisateur.setMdp(passwordCrypte);
 
         Role roleUtilisateur = new Role();
-        roleUtilisateur.setLibelle(TypeRoles.LECTEUR);
+        roleUtilisateur.setLibelle(TypeDeRole.UTILISATEUR);
         utilisateur.setRole(roleUtilisateur);
 
         utilisateur = this.utilisateurRepository.save(utilisateur);
@@ -64,7 +64,7 @@ public class UtilisateurService implements UserDetailsService {
             throw new RuntimeException("Votre code a expiré");
         }
 
-       Utilisateur utilisateurActiver =  this.utilisateurRepository.findById(Math.toIntExact(validation.getUtilisateur().getIdUtilisateur())).orElseThrow(() -> new RuntimeException("Utilisateur inconnu"));
+       Utilisateur utilisateurActiver =  this.utilisateurRepository.findById(validation.getUtilisateur().getId()).orElseThrow(() -> new RuntimeException("Utilisateur inconnu"));
         utilisateurActiver.setActif(true);
         this.utilisateurRepository.save(utilisateurActiver);
     }
@@ -89,7 +89,7 @@ public class UtilisateurService implements UserDetailsService {
         final Validation validation = validationService.lireEnFonctionDuCode(parametres.get("code"));
         if(validation.getUtilisateur().getEmail().equals(utilisateur.getEmail())) {
             String passwordCrypte = this.passwordEncoder.encode(parametres.get("password"));
-            utilisateur.setPassword(passwordCrypte);
+            utilisateur.setMdp(passwordCrypte);
             this.utilisateurRepository.save(utilisateur);
         }
     }

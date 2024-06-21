@@ -1,7 +1,7 @@
 package com.api.gesboo.repository;
 
 
-import com.api.gesboo.entite.User.Jwt;
+import com.api.gesboo.entite.Jwt;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
