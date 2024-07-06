@@ -1,7 +1,7 @@
 package com.api.gesboo.service;
 
 
-import com.api.gesboo.entite.Book;
+import com.api.gesboo.entite.Book.Book;
 import com.api.gesboo.repository.BookRepository;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;

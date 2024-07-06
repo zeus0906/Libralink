@@ -1,10 +1,9 @@
 package com.api.gesboo.entite;
 
+import com.api.gesboo.entite.Book.Book;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
-
-import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @NoArgsConstructor

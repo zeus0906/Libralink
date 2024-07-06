@@ -1,7 +1,7 @@
 package com.api.gesboo.service;
 
 
-import com.api.gesboo.entite.Book;
+import com.api.gesboo.entite.Book.Book;
 import com.api.gesboo.entite.Categorie;
 import com.api.gesboo.enums.CategorieType;
 import com.api.gesboo.repository.BookRepository;

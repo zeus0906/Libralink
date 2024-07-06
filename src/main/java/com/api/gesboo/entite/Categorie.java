@@ -1,5 +1,6 @@
 package com.api.gesboo.entite;
 
+import com.api.gesboo.entite.Book.Book;
 import com.api.gesboo.enums.CategorieType;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
@@ -8,9 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Getter

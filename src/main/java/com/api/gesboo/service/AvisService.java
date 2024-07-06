@@ -1,6 +1,7 @@
 package com.api.gesboo.service;
 
 import com.api.gesboo.entite.*;
+import com.api.gesboo.entite.Book.Book;
 import com.api.gesboo.repository.AvisRepository;
 import com.api.gesboo.repository.BookRepository;
 import com.api.gesboo.repository.ReplyRepository;

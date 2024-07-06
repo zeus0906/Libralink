@@ -1,7 +1,7 @@
 package com.api.gesboo.controller;
 
 
-import com.api.gesboo.entite.Book;
+import com.api.gesboo.entite.Book.Book;
 import com.api.gesboo.entite.Categorie;
 import com.api.gesboo.enums.CategorieType;
 import com.api.gesboo.service.CollectionService;
@@ -10,7 +10,6 @@ import com.google.gson.JsonObject;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

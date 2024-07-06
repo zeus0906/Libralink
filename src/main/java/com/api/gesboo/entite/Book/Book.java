@@ -1,15 +1,13 @@
 package com.api.gesboo.entite.Book;
 
+import com.api.gesboo.entite.Categorie;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -78,24 +76,24 @@ public class Book {
 
     @ManyToMany(mappedBy = "books")
     @JsonManagedReference
-    private Set<Collection> collections = new HashSet<>();
+    private Set<Categorie> categories = new HashSet<>();
 
-    public void addCollection(Collection collection) {
-        if (!collections.contains(collection)) {
-            collections.add(collection);
-            collection.getBooks().add(this); // Établir la relation inverse
+    public void addCollection(Categorie categorie) {
+        if (!categories.contains(categorie)) {
+            categories.add(categorie);
+            categorie.getBooks().add(this); // Établir la relation inverse
         }
     }
 
-    public void removeCollection(Collection collection) {
-        if (collections.contains(collection)) {
-            collections.remove(collection);
-            collection.getBooks().remove(this); // Rompre la relation inverse
+    public void removeCollection(Categorie categorie) {
+        if (categories.contains(categorie)) {
+            categories.remove(categorie);
+            categorie.getBooks().remove(this); // Rompre la relation inverse
         }
     }
 
-    public Set<Collection> getCollections() {
-        return new HashSet<>(collections); // Renvoyer une copie
+    public Set<Categorie> getCategories() {
+        return new HashSet<>(categories); // Renvoyer une copie
     }
 
 }
